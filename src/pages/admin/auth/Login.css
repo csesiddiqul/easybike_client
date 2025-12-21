@@ -1,0 +1,159 @@
+/* src/components/Login.css */
+
+/* Antd inputs rounded baseline */
+.ant-input,
+.ant-input-password {
+  border-radius: 0.375rem; /* rounded-md */
+}
+
+/* Card base */
+.login-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #e6e6e6;
+  margin: 0 auto;
+}
+
+/* Top narrow blue border */
+.top-border {
+  height: 4px;
+  background: #1e90ff; /* blue */
+  width: 100%;
+}
+
+/* body padding inside card */
+.card-body {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+/* input wrapper to mimic image:
+   left area is light gray input, right small box with icon */
+.input-with-icon {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid #dedede;
+  border-radius: 6px;
+    font-size: 16px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.input-with-icon ::placeholder {
+  font-size: 16px;
+}
+
+
+
+/* left input area */
+.input-left {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: #ffffff; /* light gray */
+  outline: none;
+  font-size: 16px;
+  color: #111827;
+}
+
+
+/* right icon box */
+.input-icon-box {
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border-left: 1px solid #e6e6e6;
+  color: #4b5563;
+  cursor: default;
+  padding: 8px;
+}
+
+/* eye toggle clickable */
+.input-icon-box.eye-toggle {
+  cursor: pointer;
+  padding: 10px;
+  width: 52px;
+}
+
+/* keyboard focus style */
+.input-icon-box.eye-toggle:focus,
+.input-icon-box.eye-toggle:active {
+  outline: 2px solid rgba(30,144,255,0.18);
+  outline-offset: 2px;
+}
+
+/* focus style for input */
+.input-left:focus {
+  box-shadow: none;
+}
+
+/* Form.Item spacing tweaks */
+.login-card .ant-form-item {
+  margin-bottom: 12px; /* gap between items */
+}
+
+/* But remove extra bottom margin after the submit button */
+.login-card .ant-form-item.submit-item {
+  margin-bottom: 0;
+}
+
+/* Ensure custom submit has no extra bottom gap */
+.login-card .custom-submit {
+  margin-bottom: 0;
+  background-color: #1e90ff !important;
+  border-color: #1e90ff !important;
+  color: #fff !important;
+  height: 44px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* small responsive tweak */
+@media (max-width: 480px) {
+  .login-card {
+    margin: 0 12px;
+  }
+  .input-icon-box {
+    width: 44px;
+  }
+}
+
+/* dark mode adjustments (works with document.documentElement class 'dark') */
+:root.dark .login-card {
+  background-color: #0f1724;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #e5e7eb;
+}
+
+:root.dark .input-left {
+  background: #071129;
+  color: #e5e7eb;
+}
+
+:root.dark .input-icon-box {
+  background: #061022;
+  color: #9ca3af;
+}
+
+/* Error/explain text spacing: give a bit more breathing room after message */
+.login-card .ant-form-item-explain {
+  margin-bottom: 8px;
+  color: #dc2626; /* red-600 (error) */
+}
+
+/* keep ant button hover consistent */
+.ant-btn-primary:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
+/* Ensure disabled look */
+.ant-btn[disabled] {
+  opacity: 0.85;
+}
