@@ -36,6 +36,9 @@ export const USER_ADMIN_UPDATE_PROFILE = "/api/users/update-admin-user-profile";
 
 // stocks
 export const STOCKS = "/api/stocks";
+// owners
+export const OWNERS = "/api/owners";
+
 //dashboard
 export const DASHBOARD = "/api/dashboard";
 // get-alert-messages
