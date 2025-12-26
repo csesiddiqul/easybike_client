@@ -3,6 +3,7 @@ import { FiLock } from "react-icons/fi";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { Utils } from "../../utils/utils";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { MdElectricRickshaw } from "react-icons/md";
 
 export const menus = [
   {
@@ -17,15 +18,17 @@ export const menus = [
     requiredPermissions: [
       Utils.permissions.view_role,
       Utils.permissions.view_user,
+      Utils.permissions.view_owner,
     ],
     dropdownMenus: [
       {
         name: "authorized",
         icon: FiLock,
-        links: ["/roles", "/users"],
+        links: ["/roles", "/users", '/owners'],
         requiredPermissions: [
           Utils.permissions.view_role,
           Utils.permissions.view_user,
+          Utils.permissions.view_owner,
         ],
         subMenus: [
           {
@@ -38,10 +41,23 @@ export const menus = [
             link: "/users",
             requiredPermissions: [Utils.permissions.view_user],
           },
+          {
+            name: "owners",
+            link: "/owners",
+            requiredPermissions: [Utils.permissions.view_owner],
+          },
         ],
       },
     ],
   },
+
+  {
+    name: "vehicles",
+    link: "vehicles",
+    icon: MdElectricRickshaw,
+    requiredPermissions: [Utils.permissions.view_user],
+  },
+
   {
     name: "Notifications",
     link: "notifications",

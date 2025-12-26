@@ -34,6 +34,11 @@ export const Utils = {
     delete_user: "delete_user",
     view_user: "view_user",
 
+    create_owner: "create_owner",
+    edit_owner: "edit_owner",
+    delete_owner: "delete_owner",
+    view_owner: "view_owner",
+
     create_role: "create_role",
     edit_role: "edit_role",
     delete_role: "delete_role",
