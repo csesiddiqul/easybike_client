@@ -1,3 +1,5 @@
+
+
 // base url
 export const BASE_URL = "http://127.0.0.1:8000";
 // export const BASE_URL = "https://medicinep-api.flitbd.com";
@@ -40,4 +42,7 @@ export const STOCKS = "/api/stocks";
 export const DASHBOARD = "/api/dashboard";
 // get-alert-messages
 export const GET_ALERT_MESSAGES = "/api/get-alert-messages";
+
+export const FISCAL_YEARS = "/api/fiscal-years";
+export const DRIVERS = "/api/drivers"
 

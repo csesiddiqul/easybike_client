@@ -40,6 +40,28 @@ export const Utils = {
     view_role: "view_role",
     assign_role: "assign_role",
 
+    // Fiscal Year
+    view_fiscal_year: "view_fiscal_year",
+    create_fiscal_year: "create_fiscal_year",
+    correct_fiscal_year: "correct_fiscal_year",
+    activate_fiscal_year: "activate_fiscal_year",
+
+    // Driver
+    view_driver: "view_driver",
+    create_driver: "create_driver",
+    edit_driver: "edit_driver",
+    deactivate_driver: "deactivate_driver",
+    assign_driver: "assign_driver",
+
+    // Driver_Self 
+    driver_self_profile: "driver_self_profile",
+    driver_self_licence: "driver_self_licence",
+    driver_self_payment_history: "driver_self_payment_history",
+    driver_self_renew_history: "driver_self_renew_history",
+    driver_self_make_payment: "driver_self_make_payment",
+
+
+
     create_permission: "create_permission",
     edit_permission: "edit_permission",
     delete_permission: "delete_permission",
@@ -96,4 +118,10 @@ export const Utils = {
     Expired: "Expired",
     Damaged: "Damaged",
   },
+
+
+
+
+
+
 };

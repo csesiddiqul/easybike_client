@@ -19,6 +19,13 @@ import ProtectedUserStatusRoutes from "./utils/main/ProtectedUserStatusRoutes";
 import AccountDisabled from "./pages/status/AccountDisabled";
 import NotificationsPage from "./pages/admin/notifications/NotificationsPage";
 
+
+import FiscalYear from "./pages/admin/fiscal_year/FiscalYears";
+import Drivers from "./pages/admin/driver/Drivers";
+
+import DriverPaymentSuccess from "./pages/status/DriverPaymentSuccess";
+
+
 const App = () => {
   const mode = useSelector((state) => state.theme.mode);
 
@@ -46,7 +53,30 @@ const App = () => {
                 <Route path="dashboard" element={<Dashboard />} />
               </Route>
 
-              
+
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_fiscal_year]}
+                  />
+                }
+              >
+                <Route path="fiscal-year" element={<FiscalYear/>} />
+              </Route>
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_driver]}
+                  />
+                }
+              >
+                <Route path="drivers" element={<Drivers/>} />
+              </Route>
+
+
+
              
 
               <Route
@@ -73,6 +103,7 @@ const App = () => {
               <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
+          <Route path="/payment-success" element={<DriverPaymentSuccess />} />
           <Route path="unauthorized" element={<Unauthorized />} />
           <Route path="account-disabled" element={<AccountDisabled />} />
           <Route path="*" element={<NotFound />} />
