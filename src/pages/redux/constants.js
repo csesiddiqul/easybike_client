@@ -38,6 +38,7 @@ export const USER_ADMIN_UPDATE_PROFILE = "/api/users/update-admin-user-profile";
 export const STOCKS = "/api/stocks";
 // owners
 export const OWNERS = "/api/owners";
+export const VEHICLE = "/api/vehicles";
 
 //dashboard
 export const DASHBOARD = "/api/dashboard";

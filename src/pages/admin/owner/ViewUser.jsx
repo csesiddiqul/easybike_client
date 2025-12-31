@@ -77,7 +77,7 @@ const ViewUser = ({ open, onClose, editData }) => {
 
                 {/* User Account Info */}
                 <div>
-                    <h2 className="font-semibold text-lg mb-2">Account Information</h2>
+                    <h2 className="font-semibold text-lg mb-2">Basic Information</h2>
                     <hr />
 
                     <p><strong>Name:</strong> {user?.name || "-"}</p>
