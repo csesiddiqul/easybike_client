@@ -5,13 +5,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // fetch user
     getVehicle: builder.query({
-      query: ({ searchText = "", owner_user_id = "", page = 1, perPage = 10 }) => {
+      query: ({ searchText = "", page = 1, perPage = 10 }) => {
         let url = `${VEHICLE}?per_page=${perPage}`;
         if (searchText) {
           url += `&searchText=${searchText}`;
-        }
-        if (owner_user_id) {
-          url += `&owner_user_id=${owner_user_id}`;
         }
         if (page) {
           url += `&page=${page}`;

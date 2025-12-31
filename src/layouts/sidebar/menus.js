@@ -43,7 +43,7 @@ export const menus = [
             requiredPermissions: [Utils.permissions.view_user],
           },
           {
-            name: "owners",
+            name: "Owners",
             link: "/owners",
             requiredPermissions: [Utils.permissions.view_owner],
           },
@@ -123,7 +123,7 @@ export const menus = [
     name: "Owner Vehicles",
     link: "owner-vehicles",
     icon: MdElectricRickshaw,
-    requiredPermissions: [Utils.permissions.view_vehicle],
+    requiredPermissions: [Utils.permissions.view_owner_vehicle],
   },
 
   {

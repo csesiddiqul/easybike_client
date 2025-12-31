@@ -41,6 +41,7 @@ export const STOCKS = "/api/stocks";
 // owners
 export const OWNERS = "/api/owners";
 export const VEHICLE = "/api/vehicles";
+export const OWNERVEHICLE = "/api/owner-vehicles";
 
 //dashboard
 export const DASHBOARD = "/api/dashboard";

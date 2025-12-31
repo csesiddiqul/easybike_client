@@ -7,7 +7,7 @@ const ViewVehicle = ({ open, onClose, editData }) => {
   const owner = editData?.owner;
   return (
     <Modal
-      open={open}
+      open={open}a
       onCancel={onClose}
       footer={null}
       title="Vehicle Details"

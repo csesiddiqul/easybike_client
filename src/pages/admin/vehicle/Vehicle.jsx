@@ -158,6 +158,16 @@ const Vehicle = () => {
             <FiEdit />
           </Button>
 
+        <Button
+                    type="primary"
+                    danger
+                    loading={isLoading}
+                    onClick={() => handleMakePayment(data.id)}
+                  >
+                    Make Payment
+                  </Button>
+
+
           <Popconfirm
             title="Are you sure you want to delete this vehicle?"
             onConfirm={() => deleteData(value.id)}
@@ -184,6 +194,7 @@ const Vehicle = () => {
     status: item?.status,
     action: item,
   }));
+  
 
   return (
     <div className="card-layout">
