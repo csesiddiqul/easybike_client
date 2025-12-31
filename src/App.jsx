@@ -19,6 +19,8 @@ import ProtectedUserStatusRoutes from "./utils/main/ProtectedUserStatusRoutes";
 import AccountDisabled from "./pages/status/AccountDisabled";
 import NotificationsPage from "./pages/admin/notifications/NotificationsPage";
 import Owner from "./pages/admin/owner/Owner";
+import Vehicle from "./pages/admin/vehicle/Vehicle";
+import OwnerVehicles from "./pages/admin/ownerVehicle/OwnerVehicles";
 
 const App = () => {
   const mode = useSelector((state) => state.theme.mode);
@@ -73,11 +75,21 @@ const App = () => {
               <Route
                 element={
                   <ProtectedAuthorizedRoutes
-                    requiredPermissions={[Utils.permissions.view_owner]}
+                    requiredPermissions={[Utils.permissions.view_vehicle]}
                   />
                 }
               >
-                <Route path="vehicles" element={<Owner />} />
+                <Route path="vehicles" element={<Vehicle />} />
+              </Route>
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_vehicle]}
+                  />
+                }
+              >
+                <Route path="owner-vehicles" element={<OwnerVehicles />} />
               </Route>
 
               <Route

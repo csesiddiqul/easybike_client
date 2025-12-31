@@ -15,7 +15,24 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
         return url;
       },
-      providesTags: ["Owner"],
+      providesTags: ["Owner", "selectOptionsOwner", "selectOptionsDriver"],
+      keepUnusedDataFor: 5,
+    }),
+
+
+    getOwnerSelect: builder.query({
+
+      query: () => `/api/owner-select-options`,
+      transformResponse: (response) => response.data, // Laravel response -> data array
+      providesTags: ["selectOptionsDriver"],
+      keepUnusedDataFor: 5,
+    }),
+
+
+    getDriverSelect: builder.query({
+      query: () => `/api/driver-select-options`,
+      transformResponse: (response) => response.data, // Laravel response -> data array
+      providesTags: ["selectOptionsDriver"],
       keepUnusedDataFor: 5,
     }),
 
@@ -54,6 +71,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetOwnerQuery,
+  useGetOwnerSelectQuery,
+  useGetDriverSelectQuery,
   useGetRegularOwnersQuery,
   useLazyFindOwnerQuery,
   useCreateOwnerMutation,

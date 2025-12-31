@@ -55,7 +55,15 @@ export const menus = [
     name: "vehicles",
     link: "vehicles",
     icon: MdElectricRickshaw,
-    requiredPermissions: [Utils.permissions.view_user],
+    requiredPermissions: [Utils.permissions.view_vehicle],
+  },
+
+
+  {
+    name: "Owner Vehicles",
+    link: "owner-vehicles",
+    icon: MdElectricRickshaw,
+    requiredPermissions: [Utils.permissions.view_vehicle],
   },
 
   {
