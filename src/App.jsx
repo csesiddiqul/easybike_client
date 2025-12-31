@@ -115,7 +115,7 @@ const App = () => {
               <Route
                 element={
                   <ProtectedAuthorizedRoutes
-                    requiredPermissions={[Utils.permissions.view_vehicle]}
+                    requiredPermissions={[Utils.permissions.view_owner_vehicle]}
                   />
                 }
               >

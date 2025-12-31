@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import ReusableTable from "../../../components/custom/ReusableTable.jsx";
 import {
-  useDeleteVehicleMutation,
-  useGetVehicleQuery,
-} from "../../redux/api/vehicleApiSlice.js";
+  useDeleteOwnerVehicleMutation,
+  useGetOwnerVehicleQuery,
+} from "../../redux/api/ownersVehicleApiSlice.js";
 import { Badge, Button, Popconfirm } from "antd";
 import { FiEdit, FiEye, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 import AddUpdateForm from "./AddUpdateForm.jsx";
@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { useAuthorized } from "../../../hooks/useAuthorized.js";
 import { Utils } from "../../../utils/utils.js";
 import { useSelector } from "react-redux";
+import { BsBank } from "react-icons/bs";
 
 const OwnerVehicles = () => {
 
@@ -39,10 +40,10 @@ const OwnerVehicles = () => {
       isError: isErrorDelete,
       reset: resetDelete,
     },
-  ] = useDeleteVehicleMutation();
+  ] = useDeleteOwnerVehicleMutation();
 
   // handle fetching
-  const { data, isLoading, refetch } = useGetVehicleQuery({
+  const { data, isLoading, refetch } = useGetOwnerVehicleQuery({
     page: currentPage,
     owner_user_id: userInfo?.id,
     searchText: searchValue,
@@ -162,6 +163,11 @@ const OwnerVehicles = () => {
 
           <Button onClick={() => handleEdit(value)}>
             <FiEdit />
+          </Button>
+
+
+           <Button >
+            <BsBank />
           </Button>
 
           <Popconfirm

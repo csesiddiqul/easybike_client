@@ -12,9 +12,9 @@ import { useFormik } from "formik";
 import { FiSave } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import {
-  useCreateVehicleMutation,
-  useUpdateVehicleMutation,
-} from "../../redux/api/vehicleApiSlice";
+  useCreateOwnerVehicleMutation,
+  useUpdateOwnerVehicleMutation,
+} from "../../redux/api/ownersVehicleApiSlice";
 
 import {
   useGetOwnerSelectQuery,
@@ -30,8 +30,8 @@ const { Option } = Select;
 
 const AddUpdateForm = ({ open, onClose, editData }) => {
   const [fileList, setFileList] = useState([]);
-  const [createVehicle, createState] = useCreateVehicleMutation();
-  const [updateVehicle, updateState] = useUpdateVehicleMutation();
+  const [createVehicle, createState] = useCreateOwnerVehicleMutation();
+  const [updateVehicle, updateState] = useUpdateOwnerVehicleMutation();
 
   const { data: ownersData, isLoading: ownersLoading } = useGetOwnerSelectQuery();
   const { data: driversData, isLoading: driversLoading } = useGetDriverSelectQuery();

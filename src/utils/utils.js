@@ -45,8 +45,9 @@ export const Utils = {
     delete_vehicle: "delete_vehicle",
     view_vehicle: "view_vehicle",
 
+    view_owner_vehicle: "view_owner_vehicle",
 
-    
+
 
     create_role: "create_role",
     edit_role: "edit_role",
