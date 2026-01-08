@@ -35,10 +35,10 @@ const DriverPaymentSuccess = () => {
 
         {/* BUTTON */}
         <button
-          onClick={() => navigate("/drivers")}
+          onClick={() => navigate("/dashboard")}
           className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 shadow-md"
         >
-          Go to Driver List
+          Go to Dashboard
         </button>
       </div>
     </div>

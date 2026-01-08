@@ -69,6 +69,21 @@ export const driverApiSlice = apiSlice.injectEndpoints({
     }),
 
 
+    getMyDriverProfile: builder.query({
+      query: () => "/api/drivers/me",
+    }),
+
+    getMyLicenceHistory: builder.query({
+      query: () => "/api/drivers/me/licence-history",
+    }),
+
+    getMyPaymentHistory: builder.query({
+      query: () => ({
+        url: "/api/payments/my-history",
+        method: "GET",
+      }),
+    }),
+
   }),
 });
 
@@ -79,4 +94,8 @@ export const {
   useUpdateDriverMutation,
   useDeactivateDriverMutation,
   useInitDriverLicencePaymentMutation,
+  useGetMyDriverProfileQuery,
+  useGetMyLicenceHistoryQuery,
+  useGetMyPaymentHistoryQuery,
+
 } = driverApiSlice;

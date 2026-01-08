@@ -2,6 +2,10 @@
 import { FiLock } from "react-icons/fi";
 import { FiUser, FiCreditCard, FiRefreshCw, FiFileText } from "react-icons/fi";
 import { HiOutlineDatabase } from "react-icons/hi";
+import { GiSteeringWheel } from "react-icons/gi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { FaRegCalendarCheck } from "react-icons/fa";
+
 import { Utils } from "../../utils/utils";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdElectricRickshaw } from "react-icons/md";
@@ -55,14 +59,14 @@ export const menus = [
  {
     name: "Fiscal Year",
     link: "fiscal-year",
-    icon: IoMdNotificationsOutline,
+    icon: FaRegCalendarCheck,
     requiredPermissions: [Utils.permissions.view_fiscal_year],
   },
 
   {
     name: "Driver",
     link: "drivers",
-    icon: IoMdNotificationsOutline,
+    icon: GiSteeringWheel,
     requiredPermissions: [Utils.permissions.view_driver],
   },
 
@@ -83,7 +87,7 @@ export const menus = [
   },
 
   {
-    name: "My Licence",
+    name: "My License",
     link: "my-licence",
     icon: FiFileText,
     requiredPermissions: [
@@ -112,7 +116,7 @@ export const menus = [
 
 
   {
-    name: "vehicles",
+    name: "Vehicles",
     link: "vehicles",
     icon: MdElectricRickshaw,
     requiredPermissions: [Utils.permissions.view_vehicle],
@@ -126,14 +130,17 @@ export const menus = [
     requiredPermissions: [Utils.permissions.view_owner_vehicle],
   },
 
-  {
-    name: "Notifications",
-    link: "notifications",
-    icon: IoMdNotificationsOutline,
-  },
   // {
-  //   name: "Settings",
-  //   link: "settings",
-  //   icon: SlSettings,
+  //   name: "Notifications",
+  //   link: "notifications",
+  //   icon: IoMdNotificationsOutline,
   // },
+  {
+    name: "Settings",
+    link: "settings",
+    icon: IoSettingsOutline,
+    requiredPermissions: [Utils.permissions.view_role],
+  },
+
+  
 ];
