@@ -13,7 +13,6 @@ import {
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { FiSave } from "react-icons/fi";
 
 import {
   useCreateDriverMutation,
@@ -41,7 +40,6 @@ const getBase64 = (file) =>
     reader.onerror = reject;
   });
 
-
 const AddUpdateForm = ({ open, onClose, editData }) => {
   const [fileList, setFileList] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
@@ -54,10 +52,8 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
   const {
     values,
     errors,
-    touched,
     setErrors,
     handleChange,
-    handleBlur,
     handleSubmit,
     setFieldValue,
     resetForm,
@@ -100,8 +96,9 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
       } catch (err) {
         if (err?.data?.errors) {
           setErrors(transformErrorsToObjectStructure(err.data.errors));
+        } else {
+          toast.error("Failed to save driver information");
         }
-        toast.error("Failed to save driver information");
       }
     },
   });
@@ -148,176 +145,164 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
 
   return (
     <Modal
-      className="modal"
+      className="modal"        
       destroyOnClose
       open={open}
       onCancel={onClose}
       title={editData ? "Update Driver" : "Add Driver"}
       width={800}
-        footer={
+      footer={
         <div className="text-right">
-            <Button
-            disabled={createRes.isLoading || updateRes.isLoading}
-            loading={createRes.isLoading || updateRes.isLoading}
+          <Button
             type="primary"
+            loading={createRes.isLoading || updateRes.isLoading}
             onClick={handleSubmit}
-            >
+          >
             Save Driver
-            </Button>
+          </Button>
         </div>
-        }
-     
+      }
     >
       <Spin spinning={createRes.isLoading || updateRes.isLoading}>
         <Form layout="vertical">
+          <fieldset className="bg-slate-100 rounded py-1 px-3 mt-4 border-2 border-gray-300">
+            <legend className="px-2 text-sm font-semibold text-gray-700">
+              Driver information
+            </legend>
 
-        <fieldset className="bg-slate-100 rounded py-1 px-3 mt-4 border-2 border-gray-300">
-          <legend className="px-2 text-sm font-semibold text-gray-700">
-            Driver information
-          </legend>
-          
-<Row gutter={16}>
-  {/* Image */}
-  <Col xs={24} md={6}>
-    <Form.Item label="Driver Photo">
-      <Upload 
-        listType="picture-card" 
-        fileList={fileList} 
-        onChange={({ fileList }) => setFileList(fileList)}
-        onPreview={handlePreview}
-        maxCount={1}
-        accept=".jpg,.jpeg,.png"
-      >
-        {fileList.length >= 1 ? null : "Upload"}
-      </Upload>
-    </Form.Item>
-  </Col>
+            <Row gutter={16}>
+              {/* Image */}
+              <Col xs={24} md={6}>
+                <Form.Item label="Driver Photo">
+                  <Upload
+                    listType="picture-card"
+                    fileList={fileList}
+                    onChange={({ fileList }) => setFileList(fileList)}
+                    onPreview={handlePreview}
+                    maxCount={1}
+                    accept=".jpg,.jpeg,.png"
+                  >
+                    {fileList.length >= 1 ? null : "Upload"}
+                  </Upload>
+                </Form.Item>
+              </Col>
 
-  {/* Info */}
-  <Col xs={24} md={18}>
-    <Row gutter={16}>
-      <Col md={12}>
-        <Form.Item 
-          label="Driver Name"
-          validateStatus={touched.name && errors.name ? "error" : ""}
-          help={touched.name && errors.name}
-        >
-          <Input 
-            name="name" 
-            placeholder="Enter driver full name"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Form.Item>
-      </Col>
+              {/* Info */}
+              <Col xs={24} md={18}>
+                <Row gutter={16}>
+                  <Col md={12}>
+                    <Form.Item
+                      label="Driver Name"
+                      validateStatus={errors.name ? "error" : ""}
+                      help={errors.name}
+                    >
+                      <Input
+                        name="name"
+                        placeholder="Enter driver full name"   
+                        value={values.name}
+                        onChange={handleChange}
+                      />
+                    </Form.Item>
+                  </Col>
 
-      <Col md={12}>
-        <Form.Item 
-          label="Phone Number"
-          validateStatus={touched.phone && errors.phone ? "error" : ""}
-          help={touched.phone && errors.phone}
-        >
-          <Input 
-            name="phone" 
-            placeholder="01XXXXXXXXX"
-            value={values.phone}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Form.Item>
-      </Col>
+                  <Col md={12}>
+                    <Form.Item
+                      label="Phone Number"
+                      validateStatus={errors.phone ? "error" : ""}
+                      help={errors.phone}
+                    >
+                      <Input
+                        name="phone"
+                        placeholder="01XXXXXXXXX"               
+                        value={values.phone}
+                        onChange={handleChange}
+                      />
+                    </Form.Item>
+                  </Col>
 
-      {/* Email - Full width */}
-      <Col md={24}>
-        <Form.Item label="Email (Optional)">
-          <Input 
-            name="email" 
-            placeholder="driver@email.com"
-            value={values.email}
-            onChange={handleChange}
-          />
-        </Form.Item>
-      </Col>
+                  <Col md={24}>
+                    <Form.Item
+                      label="Email (Optional)"
+                      validateStatus={errors.email ? "error" : ""}
+                      help={errors.email}
+                    >
+                      <Input
+                        name="email"
+                        placeholder="driver@email.com"         
+                        value={values.email}
+                        onChange={handleChange}
+                      />
+                    </Form.Item>
+                  </Col>
 
-      {/* NID - 6 columns */}
-      <Col md={12} lg={12}>
-        <Form.Item 
-          label="NID Number"
-          validateStatus={touched.nid && errors.nid ? "error" : ""}
-          help={touched.nid && errors.nid}
-        >
-          <Input 
-            name="nid" 
-            placeholder="Enter NID number"
-            value={values.nid}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Form.Item>
-      </Col>
+                  <Col md={12}>
+                    <Form.Item
+                      label="NID Number"
+                      validateStatus={errors.nid ? "error" : ""}
+                      help={errors.nid}
+                    >
+                      <Input
+                        name="nid"
+                        placeholder="Enter NID number"          
+                        value={values.nid}
+                        onChange={handleChange}
+                      />
+                    </Form.Item>
+                  </Col>
 
-      {/* Experience - 6 columns */}
-      <Col md={12} lg={12}>
-        <Form.Item 
-          label="Experience (Years Optional)"
-          validateStatus={
-            touched.years_of_experience && errors.years_of_experience ? "error" : ""
-          }
-          help={touched.years_of_experience && errors.years_of_experience}
-        >
-        <InputNumber
-          className="w-full"
-          min={0}
-          placeholder="0"
-          value={values.years_of_experience}
-          onChange={(value) =>
-            setFieldValue("years_of_experience", value)
-          }
-        />
-        </Form.Item>
-      </Col>
-    </Row>
-  </Col>
+                  <Col md={12}>
+                    <Form.Item
+                      label="Experience (Years Optional)"
+                      validateStatus={errors.years_of_experience ? "error" : ""}
+                      help={errors.years_of_experience}
+                    >
+                      <InputNumber
+                        className="w-full"
+                        min={0}
+                        placeholder="0"                          
+                        value={values.years_of_experience}
+                        onChange={(v) =>
+                          setFieldValue("years_of_experience", v)
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
 
-  {/* Address */}
-  <Col md={12}>
-    <Form.Item 
-      label="Present Address"
-      validateStatus={
-        touched.present_address && errors.present_address ? "error" : ""
-      }
-      help={touched.present_address && errors.present_address}
-    >
-      <Input.TextArea 
-        rows={3} 
-        name="present_address" 
-        placeholder="Current address"
-        value={values.present_address}
-        onChange={handleChange}
-      />
-    </Form.Item>
-  </Col>
+              <Col md={12}>
+                <Form.Item
+                  label="Present Address"
+                  validateStatus={errors.present_address ? "error" : ""}
+                  help={errors.present_address}
+                >
+                  <Input.TextArea
+                    rows={3}
+                    name="present_address"
+                    placeholder="Current address"               
+                    value={values.present_address}
+                    onChange={handleChange}
+                  />
+                </Form.Item>
+              </Col>
 
-  <Col md={12}>
-    <Form.Item 
-      label="Permanent Address"
-      validateStatus={
-        touched.permanent_address && errors.permanent_address ? "error" : ""
-      }
-      help={touched.permanent_address && errors.permanent_address}
-    >
-      <Input.TextArea 
-        rows={3} 
-        name="permanent_address" 
-        placeholder="Permanent address"
-        value={values.permanent_address}
-        onChange={handleChange}
-      />
-    </Form.Item>
-  </Col>
-</Row>
-        </fieldset>
+              <Col md={12}>
+                <Form.Item
+                  label="Permanent Address"
+                  validateStatus={errors.permanent_address ? "error" : ""}
+                  help={errors.permanent_address}
+                >
+                  <Input.TextArea
+                    rows={3}
+                    name="permanent_address"
+                    placeholder="Permanent address"             
+                    value={values.permanent_address}
+                    onChange={handleChange}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </fieldset>
         </Form>
 
         <Modal

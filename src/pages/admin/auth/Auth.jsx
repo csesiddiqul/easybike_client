@@ -14,6 +14,8 @@ import { setCredentials } from "../../redux/features/authSlice";
 import { useLoginMutation } from "../../redux/api/authApiSlice";
 import { PulseLoader } from "react-spinners";
 import ForgotPassword from "./ForgotPassword";
+import { useGetSystemSettingsQuery } from "../../redux/api/systemSettingApiSlice";
+import { RiH1 } from "react-icons/ri";
 
 const Auth = () => {
   const [open, setOpen] = useState(false);
@@ -21,6 +23,15 @@ const Auth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const mode = useSelector((state) => state.theme.mode);
+
+  /* ================= SYSTEM SETTINGS ================= */
+  const { data: settingRes } = useGetSystemSettingsQuery();
+  const setting = settingRes?.data;
+
+  const systemName = setting?.system_name || "Fireball";
+  const systemLogo = setting?.system_logo || assets.logo;
+
+
 
   const [login, { isLoading, isError, isSuccess, error, data }] =
     useLoginMutation();
@@ -49,17 +60,25 @@ const Auth = () => {
       .required("Password field is required"),
   });
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(error?.data?.message || "Login failed");
+useEffect(() => {
+  if (isError) {
+    toast.error(error?.data?.message || "Login failed");
+  }
+
+  if (isSuccess) {
+    toast.success(data?.message || "Login success");
+
+    dispatch(setCredentials(data?.data));
+
+    const permissions = data?.data?.user?.permissions || [];
+
+    if (permissions.includes("driver_self_profile")) {
+      navigate("/my-profile", { replace: true });
+    } else {
+      navigate("/dashboard", { replace: true });
     }
-    if (isSuccess) {
-      toast.success(data?.message || "Login success");
-      dispatch(setCredentials(data?.data));
-      navigate("/profile");
-    }
-    // eslint-disable-next-line
-  }, [isError, isSuccess]);
+  }
+}, [isError, isSuccess, data, dispatch, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-4">
@@ -87,13 +106,13 @@ const Auth = () => {
 
         {/* content */}
         <div className="card-body px-8 pt-6 pb-8">
-          <div className="flex justify-center mb-6">
-            <img src={assets.logo} alt="Logo" className="h-24" />
+          <div className="flex justify-center mb-3">
+            <img src={systemLogo} alt="Logo" className="h-24 rounded" />
           </div>
 
-          <h2 className="text-center text-gray-700 dark:text-gray-100 text-lg font-bold">
-            Sign in to start your session
-          </h2>
+          <h1 className="text-center text-gray-700 dark:text-gray-100 font-bold">
+             {systemName}
+          </h1>
 
           <p className="text-center text-gray-500 dark:text-gray-400 text-md mb-6">
             Please enter your email and password to sign in and start your session.
@@ -186,9 +205,8 @@ const Auth = () => {
 
                   <button
                     type="button"
-                    className="mt-4"
+                    className="mt-4 text-blue-600 hover:underline text-sm"
                     onClick={showModal}
-                    className="text-blue-600 hover:underline text-sm"
                   >
                     Forgot password?
                   </button>

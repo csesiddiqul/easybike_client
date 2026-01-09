@@ -12,28 +12,21 @@ import { FiSave } from "react-icons/fi";
 import dayjs from "dayjs";
 
 const AddUpdateForm = ({ open, onClose, editData }) => {
-  /* ===================== API ===================== */
   const [createFiscalYear, createRes] = useCreateFiscalYearMutation();
   const [correctFiscalYear, updateRes] = useCorrectFiscalYearMutation();
 
-  /* ===================== VALIDATION ===================== */
   const validationSchema = Yup.object({
     name: Yup.string().required("Fiscal year name is required"),
     start_date: Yup.mixed().required("Start date is required"),
     end_date: Yup.mixed()
       .required("End date is required")
-      .test(
-        "after-start",
-        "End date must be after start date",
-        function (value) {
-          const { start_date } = this.parent;
-          if (!value || !start_date) return true;
-          return dayjs(value).isAfter(dayjs(start_date));
-        }
-      ),
+      .test("after-start", "End date must be after start date", function (value) {
+        const { start_date } = this.parent;
+        if (!value || !start_date) return true;
+        return dayjs(value).isAfter(dayjs(start_date));
+      }),
   });
 
-  /* ===================== FORMIK ===================== */
   const {
     values,
     errors,
@@ -67,7 +60,6 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
     },
   });
 
-  /* ===================== SET EDIT DATA ===================== */
   useEffect(() => {
     if (open && editData) {
       setValues({
@@ -82,53 +74,46 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
     }
   }, [open, editData, setValues, resetForm]);
 
-  /* ===================== RESPONSE HANDLING ===================== */
   useEffect(() => {
-   
     if (createRes.isError) {
-        toast.error(
-        createRes.error?.data?.message || "Create failed"
-        );
+      const apiError = createRes.error?.data;
 
-        setErrors(
-        transformErrorsToObjectStructure(
-            createRes.error?.data?.errors || {}
-        )
-        );
+      if (apiError?.errors) {
+        setErrors(transformErrorsToObjectStructure(apiError.errors));
+      } else {
+        toast.error(apiError?.message || "Create failed");
+      }
 
-        createRes.reset();
+      createRes.reset();
     }
 
     if (createRes.isSuccess) {
-        toast.success(
-        createRes.data?.message || "Fiscal year created"
-        );
-        onClose();
-        resetForm();
-        createRes.reset();
+      toast.success(createRes.data?.message || "Fiscal year created");
+      onClose();
+      resetForm();
+      createRes.reset();
     }
 
     if (updateRes.isError) {
-        const message = updateRes.error?.data?.message;
-        toast.error(message || "Update failed");
-        updateRes.reset();
+      const apiError = updateRes.error?.data;
+
+      if (apiError?.errors) {
+        setErrors(transformErrorsToObjectStructure(apiError.errors));
+      } else {
+        toast.error(apiError?.message || "Update failed");
+      }
+
+      updateRes.reset();
     }
 
     if (updateRes.isSuccess) {
-        toast.success(updateRes.data?.message || "Fiscal year updated");
-        onClose();
-        resetForm();
-        updateRes.reset();
+      toast.success(updateRes.data?.message || "Fiscal year updated");
+      onClose();
+      resetForm();
+      updateRes.reset();
     }
-  }, [
-    createRes,
-    updateRes,
-    onClose,
-    resetForm,
-    setErrors,
-  ]);
+  }, [createRes, updateRes, onClose, resetForm, setErrors]);
 
-  /* ===================== UI ===================== */
   return (
     <Modal
       destroyOnClose
@@ -150,7 +135,6 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
       }
     >
       <Form layout="vertical" onSubmitCapture={handleSubmit}>
-        {/* Name */}
         <Form.Item
           label="Fiscal Year Name"
           validateStatus={errors.name ? "error" : ""}
@@ -165,7 +149,6 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
           />
         </Form.Item>
 
-        {/* Start Date */}
         <Form.Item
           label="Start Date"
           validateStatus={errors.start_date ? "error" : ""}
@@ -180,7 +163,6 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
           />
         </Form.Item>
 
-        {/* End Date */}
         <Form.Item
           label="End Date"
           validateStatus={errors.end_date ? "error" : ""}

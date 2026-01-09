@@ -21,12 +21,20 @@ import NotificationsPage from "./pages/admin/notifications/NotificationsPage";
 import Owner from "./pages/admin/owner/Owner";
 import Vehicle from "./pages/admin/vehicle/Vehicle";
 import OwnerVehicles from "./pages/admin/ownerVehicle/OwnerVehicles";
+import AppSettingPage from "./pages/admin/setting/Setting";
 
+
+import Driverprofile from "./pages/driver/SelfProfile";
+import MyLicence from "./pages/driver/SelfLicence";
+import RenewHistory from "./pages/driver/RenewHistory";
+import PaymentHistory from "./pages/driver/PaymentHistory";
 
 import FiscalYear from "./pages/admin/fiscal_year/FiscalYears";
 import Drivers from "./pages/admin/driver/Drivers";
 
 import DriverPaymentSuccess from "./pages/status/DriverPaymentSuccess";
+import DriverPaymentFailed from "./pages/status/DriverPaymentFailed";
+import DriverPaymentCancel from "./pages/status/DriverPaymentCancel";
 
 
 const App = () => {
@@ -55,6 +63,58 @@ const App = () => {
               >
                 <Route path="dashboard" element={<Dashboard />} />
               </Route>
+
+
+
+
+            {/* ================= Driver Panel Menu ===============*/}
+             <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_self_profile]}
+                  />
+                }
+              >
+              <Route path="my-profile" element={<Driverprofile/>} />
+              </Route>
+
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_self_licence]}
+                  />
+                }
+              >
+              <Route path="my-licence" element={<MyLicence/>} />
+              </Route>
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_self_payment_history]}
+                  />
+                }
+              >
+              <Route path="my-payments" element={<PaymentHistory/>} />
+              </Route>
+
+         
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_self_renew_history]}
+                  />
+                }
+              >
+              <Route path="my-renew-history" element={<RenewHistory/>} />
+              </Route>
+
+
+
+
+
 
 
 
@@ -131,12 +191,28 @@ const App = () => {
               >
                 <Route path="roles" element={<Roles />} />
               </Route>
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_role]}
+                  />
+                }
+              >
+                <Route path="settings" element={<AppSettingPage />} />
+              </Route>
+
+
               <Route path="notifications" element={<NotificationsPage />} />
 
               <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
+
           <Route path="/payment-success" element={<DriverPaymentSuccess />} />
+          <Route path="/payment-failed" element={<DriverPaymentFailed />} />
+          <Route path="/payment-cancel" element={<DriverPaymentCancel />} />
+
           <Route path="unauthorized" element={<Unauthorized />} />
           <Route path="account-disabled" element={<AccountDisabled />} />
           <Route path="*" element={<NotFound />} />

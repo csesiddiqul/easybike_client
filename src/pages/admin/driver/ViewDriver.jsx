@@ -40,7 +40,7 @@ const ViewDriver = ({ open, onClose, data }) => {
       const res = await initPayment(driverId).unwrap();
 
       if (res?.payment_url) {
-        window.location.href = res.payment_url;
+        window.open(res.payment_url, "_blank", "noopener,noreferrer");
       } else {
         toast.error("Payment gateway unavailable");
       }
@@ -48,6 +48,7 @@ const ViewDriver = ({ open, onClose, data }) => {
       toast.error("Failed to initiate payment");
     }
   };
+
 
   return (
     <>
