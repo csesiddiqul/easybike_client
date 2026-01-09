@@ -46,7 +46,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
     supplier_type: Yup.string().required("Supplier type is required"),
     vehicle_model_name: Yup.string().required("Vehicle model is required"),
     chassis_number: Yup.string().required("Chassis number is required"),
-    driver_id: Yup.number().required("Driver is required"),
+    // driver_id: Yup.number().required("Driver is required"),
     status: Yup.string().required("Status is required"),
   });
 
