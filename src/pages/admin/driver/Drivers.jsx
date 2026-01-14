@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import ReusableTable from "../../../components/custom/ReusableTable";
 import {
@@ -168,8 +168,8 @@ const Drivers = () => {
     ?.filter((item) =>
       searchValue
         ? item.user?.name
-            ?.toLowerCase()
-            .includes(searchValue.toLowerCase())
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase())
         : true
     )
     .map((item, i) => ({

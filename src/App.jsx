@@ -35,6 +35,11 @@ import Drivers from "./pages/admin/driver/Drivers";
 import DriverPaymentSuccess from "./pages/status/DriverPaymentSuccess";
 import DriverPaymentFailed from "./pages/status/DriverPaymentFailed";
 import DriverPaymentCancel from "./pages/status/DriverPaymentCancel";
+import VehicleLicense from "./pages/admin/vehicleLicense/VehicleLicense";
+import VehicleLicenseOwner from "./pages/admin/vehicleLicense/VehicleLicenseOwner";
+import VehiclePaymentSuccess from "./pages/status/VehiclePaymentSuccess";
+import VehiclePaymentHistory from "./pages/driver/VehiclePaymentHistory";
+import VehicleLicenseGeneration from "./pages/admin/vehicleLicense/VehicleLicenseGeneration";
 
 
 const App = () => {
@@ -67,15 +72,15 @@ const App = () => {
 
 
 
-            {/* ================= Driver Panel Menu ===============*/}
-             <Route
+              {/* ================= Driver Panel Menu ===============*/}
+              <Route
                 element={
                   <ProtectedAuthorizedRoutes
                     requiredPermissions={[Utils.permissions.driver_self_profile]}
                   />
                 }
               >
-              <Route path="my-profile" element={<Driverprofile/>} />
+                <Route path="my-profile" element={<Driverprofile />} />
               </Route>
 
 
@@ -86,7 +91,7 @@ const App = () => {
                   />
                 }
               >
-              <Route path="my-licence" element={<MyLicence/>} />
+                <Route path="my-licence" element={<MyLicence />} />
               </Route>
 
               <Route
@@ -96,10 +101,21 @@ const App = () => {
                   />
                 }
               >
-              <Route path="my-payments" element={<PaymentHistory/>} />
+                <Route path="my-payments" element={<PaymentHistory />} />
               </Route>
 
-         
+
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_self_payment_history]}
+                  />
+                }
+              >
+                <Route path="vehicle-payments" element={<VehiclePaymentHistory />} />
+              </Route>
+
 
               <Route
                 element={
@@ -108,7 +124,7 @@ const App = () => {
                   />
                 }
               >
-              <Route path="my-renew-history" element={<RenewHistory/>} />
+                <Route path="my-renew-history" element={<RenewHistory />} />
               </Route>
 
 
@@ -125,7 +141,7 @@ const App = () => {
                   />
                 }
               >
-                <Route path="fiscal-year" element={<FiscalYear/>} />
+                <Route path="fiscal-year" element={<FiscalYear />} />
               </Route>
 
               <Route
@@ -135,12 +151,12 @@ const App = () => {
                   />
                 }
               >
-                <Route path="drivers" element={<Drivers/>} />
+                <Route path="drivers" element={<Drivers />} />
               </Route>
 
 
 
-             
+
 
               <Route
                 element={
@@ -182,6 +198,43 @@ const App = () => {
                 <Route path="owner-vehicles" element={<OwnerVehicles />} />
               </Route>
 
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_vehicle_license]}
+                  />
+                }
+              >
+                <Route path="vehicle-licenses" element={<VehicleLicense />} />
+              </Route>
+
+
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_vehicle_license]}
+                  />
+                }
+              >
+                <Route path="licenses-generation" element={<VehicleLicenseGeneration />} />
+              </Route>
+
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.view_owner_vehicle]}
+                  />
+                }
+              >
+                <Route path="owner-vehicle-licenses" element={<VehicleLicenseOwner />} />
+              </Route>
+
+
+
+
               <Route
                 element={
                   <ProtectedAuthorizedRoutes
@@ -210,6 +263,7 @@ const App = () => {
           </Route>
 
           <Route path="/payment-success" element={<DriverPaymentSuccess />} />
+          <Route path="/vehicle-licenses-payment-success" element={<VehiclePaymentSuccess />} />
           <Route path="/payment-failed" element={<DriverPaymentFailed />} />
           <Route path="/payment-cancel" element={<DriverPaymentCancel />} />
 

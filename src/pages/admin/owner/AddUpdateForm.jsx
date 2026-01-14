@@ -9,10 +9,9 @@ import {
   Select,
   Spin,
   Upload,
-  Typography,
 } from "antd";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { toast } from "react-hot-toast";
 import { FiSave } from "react-icons/fi";
 import { createFormData } from "../../../utils/main/createFormData";
@@ -56,7 +55,6 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
     errors,
     touched,
     handleChange,
-    handleBlur,
     handleSubmit,
     setErrors,
     setFieldValue,
