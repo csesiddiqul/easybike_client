@@ -22,6 +22,8 @@ import Owner from "./pages/admin/owner/Owner";
 import Vehicle from "./pages/admin/vehicle/Vehicle";
 import OwnerVehicles from "./pages/admin/ownerVehicle/OwnerVehicles";
 import AppSettingPage from "./pages/admin/setting/Setting";
+import DriverRenewReports from "./pages/admin/driver/DriverRenewReports";
+import DriverPaymentReports from "./pages/admin/driver/DriverPaymentReports";
 
 
 import Driverprofile from "./pages/driver/SelfProfile";
@@ -192,6 +194,28 @@ const App = () => {
                 <Route path="roles" element={<Roles />} />
               </Route>
 
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_renew_reports]}
+                  />
+                }
+              >
+                <Route path="driver-renew-reports" element={<DriverRenewReports />} />
+              </Route>
+
+              <Route
+                element={
+                  <ProtectedAuthorizedRoutes
+                    requiredPermissions={[Utils.permissions.driver_payment_reports]}
+                  />
+                }
+              >
+                <Route path="driver-payment-reports" element={<DriverPaymentReports />} />
+              </Route>
+
+
               <Route
                 element={
                   <ProtectedAuthorizedRoutes
@@ -201,6 +225,10 @@ const App = () => {
               >
                 <Route path="settings" element={<AppSettingPage />} />
               </Route>
+
+
+
+
 
 
               <Route path="notifications" element={<NotificationsPage />} />

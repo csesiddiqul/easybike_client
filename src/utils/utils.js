@@ -127,6 +127,10 @@ export const Utils = {
 
     edit_website_setting: "edit_website_setting",
     view_website_setting: "view_website_setting",
+
+
+    driver_renew_reports: "driver_renew_reports",
+    driver_payment_reports: "driver_payment_reports",
   },
   stock_status: {
     Active: "Active",

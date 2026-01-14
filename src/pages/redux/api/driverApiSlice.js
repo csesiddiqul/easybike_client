@@ -84,6 +84,28 @@ export const driverApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getDriverPaymentReports: builder.query({
+      query: (params) => ({
+        url: "/api/driver-payment-reports",
+        method: "GET",
+        params, // 🔥 from_date, to_date, payment_type, fiscal_year_id
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
+    /* =================================================
+       🔥 ADMIN CENTRAL RENEW / LICENCE REPORT
+       Route: driver-renew-reports
+    ================================================= */
+    getDriverRenewReports: builder.query({
+      query: (params) => ({
+        url: "/api/driver-renew-reports",
+        method: "GET",
+        params, // 🔥 status, payment_type, fiscal_year_id, date range
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
   }),
 });
 
@@ -97,5 +119,7 @@ export const {
   useGetMyDriverProfileQuery,
   useGetMyLicenceHistoryQuery,
   useGetMyPaymentHistoryQuery,
+  useGetDriverPaymentReportsQuery,
+  useGetDriverRenewReportsQuery,
 
 } = driverApiSlice;
