@@ -147,6 +147,46 @@ export const menus = [
   },
 
   {
+    label: "Reports",
+    requiredPermissions: [
+      Utils.permissions.driver_renew_reports,
+      Utils.permissions.driver_payment_reports,
+    ],
+    dropdownMenus: [
+      {
+        name: "Driver Reports",
+        icon: FiLock,
+        links: ["/driver-renew-reports", "/driver-payment-reports"],
+        requiredPermissions: [
+          Utils.permissions.driver_renew_reports,
+          Utils.permissions.driver_payment_reports,
+        ],
+        subMenus: [
+          {
+            name: "Renew Reports",
+            link: "/driver-renew-reports",
+            requiredPermissions: [Utils.permissions.driver_renew_reports],
+          },
+          {
+            name: "Payment Reports",
+            link: "/driver-payment-reports",
+            requiredPermissions: [Utils.permissions.driver_payment_reports],
+          },
+        ],
+      },
+    ],
+  },
+
+
+
+
+
+
+
+
+
+
+  {
     name: "Owner Vehicles",
     link: "owner-vehicles",
     icon: MdElectricRickshaw,
@@ -169,7 +209,7 @@ export const menus = [
     name: "Settings",
     link: "settings",
     icon: IoSettingsOutline,
-    requiredPermissions: [Utils.permissions.view_role],
+    requiredPermissions: [Utils.permissions.view_website_setting],
   },
 
 
