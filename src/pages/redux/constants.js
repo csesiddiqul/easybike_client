@@ -51,3 +51,6 @@ export const GET_ALERT_MESSAGES = "/api/get-alert-messages";
 export const FISCAL_YEARS = "/api/fiscal-years";
 export const DRIVERS = "/api/drivers"
 
+export const VEHICLE_LICENSES = "/api/vehicle-licenses";
+export const MAKE_VEHICLE_LICENSE_PAYMENT = "/api/make-vehicle-license-payment";
+

@@ -83,6 +83,12 @@ export const driverApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getMyVehiclePaymentHistory: builder.query({
+      query: () => ({
+        url: "/api/vehicle-payments",
+        method: "GET",
+      }),
+    }),
 
   }),
 });
@@ -97,5 +103,6 @@ export const {
   useGetMyDriverProfileQuery,
   useGetMyLicenceHistoryQuery,
   useGetMyPaymentHistoryQuery,
+  useGetMyVehiclePaymentHistoryQuery,
 
 } = driverApiSlice;

@@ -39,6 +39,12 @@ export const Utils = {
     delete_owner: "delete_owner",
     view_owner: "view_owner",
 
+    //  vehicle_license
+    view_vehicle_license: "view_vehicle_license",
+    edit_vehicle_license: "edit_vehicle_license",
+    delete_vehicle_license: "delete_vehicle_license",
+    create_vehicle_license: "create_vehicle_license",
+
 
     create_vehicle: "create_vehicle",
     edit_vehicle: "edit_vehicle",

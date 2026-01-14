@@ -126,6 +126,7 @@ const Vehicle = () => {
       label: "Status",
       name: "status",
       render: (value) => (
+        
         <Badge
           text={value}
           status={value === "active" ? "success" : "error"}
@@ -158,14 +159,6 @@ const Vehicle = () => {
             <FiEdit />
           </Button>
 
-        <Button
-                    type="primary"
-                    danger
-                    loading={isLoading}
-                    onClick={() => handleMakePayment(data.id)}
-                  >
-                    Make Payment
-                  </Button>
 
 
           <Popconfirm
@@ -194,7 +187,7 @@ const Vehicle = () => {
     status: item?.status,
     action: item,
   }));
-  
+
 
   return (
     <div className="card-layout">
