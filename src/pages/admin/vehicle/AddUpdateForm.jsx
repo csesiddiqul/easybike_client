@@ -46,7 +46,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
     supplier_type: Yup.string().required("Supplier type is required"),
     vehicle_model_name: Yup.string().required("Vehicle model is required"),
     chassis_number: Yup.string().required("Chassis number is required"),
-    driver_id: Yup.number().required("Driver is required"),
+    // driver_id: Yup.number().required("Driver is required"),
     status: Yup.string().required("Status is required"),
   });
 
@@ -257,6 +257,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
                       option.children.toLowerCase().includes(input.toLowerCase())
                     }
                   >
+                    <Option value="">Choose</Option>
                     {driversData?.map((driver) => (
                       <Option key={driver.id} value={driver.id}>
                         {driver.name}
@@ -270,21 +271,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
           </fieldset>
 
           {/* ================= STATUS ================= */}
-          <Form.Item
-            className="mt-2"
-            label="Vehicle Status"
-            validateStatus={touched.status && errors.status ? "error" : ""}
-            help={touched.status && errors.status}
-          >
-            <Select
-              value={values.status}
-              onChange={(v) => setFieldValue("status", v)}
-            >
-              <Option value="pending">Pending</Option>
-              <Option value="approved">Approved</Option>
-              <Option value="expired">Expired</Option>
-            </Select>
-          </Form.Item>
+          
 
         </Form>
       </Spin>

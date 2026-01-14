@@ -83,6 +83,12 @@ export const driverApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getMyVehiclePaymentHistory: builder.query({
+      query: () => ({
+        url: "/api/vehicle-payments",
+        method: "GET",
+      }),
+    }),
 
     getDriverPaymentReports: builder.query({
       query: (params) => ({
@@ -121,5 +127,6 @@ export const {
   useGetMyPaymentHistoryQuery,
   useGetDriverPaymentReportsQuery,
   useGetDriverRenewReportsQuery,
+  useGetMyVehiclePaymentHistoryQuery,
 
 } = driverApiSlice;

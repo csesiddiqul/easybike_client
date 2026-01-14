@@ -4,10 +4,9 @@ import { FiUser, FiCreditCard, FiRefreshCw, FiFileText } from "react-icons/fi";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { GiSteeringWheel } from "react-icons/gi";
 import { IoSettingsOutline } from "react-icons/io5";
-import { FaRegCalendarCheck } from "react-icons/fa";
+import { FaRegCalendarCheck, FaUser, FaIdCard } from "react-icons/fa";
 
 import { Utils } from "../../utils/utils";
-import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdElectricRickshaw } from "react-icons/md";
 
 export const menus = [
@@ -29,7 +28,7 @@ export const menus = [
       {
         name: "authorized",
         icon: FiLock,
-        links: ["/roles", "/users", '/owners'],
+        links: ["/roles", "/users"],
         requiredPermissions: [
           Utils.permissions.view_role,
           Utils.permissions.view_user,
@@ -46,17 +45,20 @@ export const menus = [
             link: "/users",
             requiredPermissions: [Utils.permissions.view_user],
           },
-          {
-            name: "Owners",
-            link: "/owners",
-            requiredPermissions: [Utils.permissions.view_owner],
-          },
         ],
       },
     ],
   },
 
- {
+
+  {
+    name: "Owners",
+    link: "/owners",
+    icon: FaUser,
+    requiredPermissions: [Utils.permissions.view_owner],
+  },
+
+  {
     name: "Fiscal Year",
     link: "fiscal-year",
     icon: FaRegCalendarCheck,
@@ -71,9 +73,9 @@ export const menus = [
   },
 
 
-  
 
-  
+
+
   /* =====================
      DRIVER SELF PANEL (NO SUB MENU)
   ===================== */
@@ -103,6 +105,14 @@ export const menus = [
       Utils.permissions.driver_self_payment_history,
     ],
   },
+  {
+    name: "Vehicle Payments",
+    link: "vehicle-payments",
+    icon: FiCreditCard,
+    requiredPermissions: [
+      Utils.permissions.driver_self_payment_history,
+    ],
+  },
 
   {
     name: "Renew History",
@@ -122,6 +132,19 @@ export const menus = [
     requiredPermissions: [Utils.permissions.view_vehicle],
   },
 
+  {
+    name: "Vehicle Licenses Payment",
+    link: "/vehicle-licenses",
+    icon: FaIdCard,
+    requiredPermissions: [Utils.permissions.view_vehicle_license],
+  },
+
+  {
+    name: "Licenses Generation",
+    link: "/licenses-generation",
+    icon: FaIdCard,
+    requiredPermissions: [Utils.permissions.view_vehicle_license],
+  },
 
   {
     label: "Reports",
@@ -170,6 +193,13 @@ export const menus = [
     requiredPermissions: [Utils.permissions.view_owner_vehicle],
   },
 
+  {
+    name: "Owner Licenses Payment",
+    link: "owner-vehicle-licenses",
+    icon: MdElectricRickshaw,
+    requiredPermissions: [Utils.permissions.view_owner_vehicle],
+  },
+
   // {
   //   name: "Notifications",
   //   link: "notifications",
@@ -182,5 +212,5 @@ export const menus = [
     requiredPermissions: [Utils.permissions.view_website_setting],
   },
 
-  
+
 ];

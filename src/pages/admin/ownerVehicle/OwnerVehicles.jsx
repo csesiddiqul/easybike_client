@@ -18,7 +18,7 @@ import { BsBank } from "react-icons/bs";
 const OwnerVehicles = () => {
 
   const userInfo = useSelector((state) => state.auth.userInfo);
-  console.log('sadfasdfasdffa', userInfo?.id);
+
 
   const { hasPermission, somePermission } = useAuthorized();
   const [currentPage, setCurrentPage] = useState(1);
