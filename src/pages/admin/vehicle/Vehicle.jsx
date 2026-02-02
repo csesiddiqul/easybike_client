@@ -9,22 +9,29 @@ import { Badge, Button, Popconfirm } from "antd";
 import { FiEdit, FiEye, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 import AddUpdateForm from "./AddUpdateForm.jsx";
 import ViewVehicle from "./ViewVehicle.jsx";
+import VehicleLicence from "./VehicleLicense.jsx";
 import toast from "react-hot-toast";
 import { useAuthorized } from "../../../hooks/useAuthorized.js";
 import { Utils } from "../../../utils/utils.js";
+import { MdDocumentScanner } from "react-icons/md";
 
 const Vehicle = () => {
   const { hasPermission, somePermission } = useAuthorized();
+
+  // ================= STATES =================
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [perPage, setPerPage] = useState(10);
-  // for edit
-  const [open, setOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
-  const [openView, setOpenView] = useState(false);
 
-  // handle delete
+  const [open, setOpen] = useState(false);               // Add / Edit
+  const [openView, setOpenView] = useState(false);       // View
+  const [openLicenseView, setOpenLicenseView] = useState(false); // Licence
+
+  const [editData, setEditData] = useState(null);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+
+  // ================= API =================
   const [
     deleteData,
     {
@@ -36,7 +43,6 @@ const Vehicle = () => {
     },
   ] = useDeleteVehicleMutation();
 
-  // handle fetching
   const { data, isLoading, refetch } = useGetVehicleQuery({
     page: currentPage,
     searchText: searchValue,
@@ -46,6 +52,7 @@ const Vehicle = () => {
   const totalData = data?.data?.meta?.total;
   const lastPage = data?.data?.meta?.last_page;
 
+  // ================= SEARCH =================
   const debouncedSearch = useCallback(
     debounce((value) => {
       setCurrentPage(1);
@@ -56,10 +63,7 @@ const Vehicle = () => {
   );
 
   useEffect(() => {
-    // Cleanup function to cancel the debounce when the component unmounts or debouncedSearch changes
-    return () => {
-      debouncedSearch?.cancel();
-    };
+    return () => debouncedSearch.cancel();
   }, [debouncedSearch]);
 
   const handleSearchChange = (value) => {
@@ -67,27 +71,15 @@ const Vehicle = () => {
     debouncedSearch(value);
   };
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  // ================= PAGINATION =================
+  const handlePageChange = (page) => setCurrentPage(page);
 
   const handlePerPageChange = (value) => {
     setPerPage(value);
-    setCurrentPage(1); // Reset to first page on perPage change
+    setCurrentPage(1);
   };
 
-  // Handle add/edit
-  const handleClose = () => {
-    setEditData(null);
-    setOpen(false);
-  };
-
-  const handleViewClose = () => {
-    setEditData(null);
-    setOpenView(false);
-  };
-
-
+  // ================= MODAL HANDLERS =================
   const handleAdd = () => {
     setEditData(null);
     setOpen(true);
@@ -98,6 +90,22 @@ const Vehicle = () => {
     setOpen(true);
   };
 
+  const handleClose = () => {
+    setEditData(null);
+    setOpen(false);
+  };
+
+  const handleViewClose = () => {
+    setEditData(null);
+    setOpenView(false);
+  };
+
+  const handleLicenceClose = () => {
+    setSelectedVehicle(null);
+    setOpenLicenseView(false);
+  };
+
+  // ================= DELETE FEEDBACK =================
   useEffect(() => {
     if (isSuccessDelete) {
       toast.success(dataDelete?.message || "Deleted successfully");
@@ -107,14 +115,9 @@ const Vehicle = () => {
       toast.error(errorDelete?.data?.message || "Failed to delete");
       resetDelete();
     }
-  }, [
-    isSuccessDelete,
-    isErrorDelete,
-    dataDelete,
-    errorDelete,
-    refetch,
-    resetDelete,
-  ]);
+  }, [isSuccessDelete, isErrorDelete]);
+
+  // ================= TABLE COLUMNS =================
   const columns = [
     { label: "SI", name: "si" },
     { label: "Registration No", name: "registration_number" },
@@ -126,15 +129,16 @@ const Vehicle = () => {
       label: "Status",
       name: "status",
       render: (value) => (
-        
         <Badge
-          text={value}
           status={value === "active" ? "success" : "error"}
+          text={value === "active" ? "Active" : "Inactive"}
         />
       ),
-    },
-  ];
+    }
 
+
+    
+  ];
 
   if (
     somePermission([
@@ -148,19 +152,32 @@ const Vehicle = () => {
       name: "action",
       render: (value) => (
         <div className="flex items-center gap-2">
-          <Button onClick={() => {
-            setEditData(value);
-            setOpenView(true);
-          }}>
+          {/* VEHICLE LICENCE */}
+          <Button
+            onClick={() => {
+              setSelectedVehicle(value);
+              setOpenLicenseView(true);
+            }}
+          >
+            <MdDocumentScanner />
+          </Button>
+
+          {/* VIEW */}
+          <Button
+            onClick={() => {
+              setEditData(value);
+              setOpenView(true);
+            }}
+          >
             <FiEye />
           </Button>
 
+          {/* EDIT */}
           <Button onClick={() => handleEdit(value)}>
             <FiEdit />
           </Button>
 
-
-
+          {/* DELETE */}
           <Popconfirm
             title="Are you sure you want to delete this vehicle?"
             onConfirm={() => deleteData(value.id)}
@@ -172,9 +189,9 @@ const Vehicle = () => {
         </div>
       ),
     });
-
   }
 
+  // ================= TABLE DATA =================
   const TableData = data?.data?.data?.map((item, i) => ({
     si: (currentPage - 1) * perPage + i + 1,
     registration_number: item.registration_number,
@@ -182,25 +199,22 @@ const Vehicle = () => {
     vehicle_model_name: item.vehicle_model_name,
     driver_name: item.current_driver?.driver?.name,
     driver_phone: item.current_driver?.driver?.phone,
-    email: item.user?.email,
-    phone: item.user?.phone,
-    status: item?.status,
+    status: item.status,
     action: item,
   }));
 
-
+  // ================= RENDER =================
   return (
     <div className="card-layout">
       <div className="flex justify-between headerbg items-center py-2 mb-4">
-        <h1 className="text-xl font-bold text-gray-600 dark:text-gray-300">
-          Vehicle
-        </h1>
+        <h1 className="text-xl font-bold text-gray-600">Vehicle</h1>
         {hasPermission([Utils.permissions.create_owner]) && (
           <Button type="primary" onClick={handleAdd}>
             <FiPlusCircle /> Create
           </Button>
         )}
       </div>
+
       <ReusableTable
         columns={columns}
         data={TableData}
@@ -214,7 +228,16 @@ const Vehicle = () => {
         perPage={perPage}
         onPerPageChange={handlePerPageChange}
       />
+
+      {/* MODALS */}
       <AddUpdateForm open={open} onClose={handleClose} editData={editData} />
+
+      <VehicleLicence
+        open={openLicenseView}
+        onClose={handleLicenceClose}
+        vehicle={selectedVehicle}
+      />
+
       <ViewVehicle
         open={openView}
         onClose={handleViewClose}

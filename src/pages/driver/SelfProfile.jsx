@@ -238,12 +238,23 @@ const DriverProfilePage = () => {
           <Row gutter={[16, 16]}>
             <Col md={12} xs={24}>
               <AddressBox title="Present Address">
-                {driver.present_address}
+                <div><b>Village:</b> {driver.present_village || "N/A"}</div>
+                <div><b>Ward:</b> {driver.present_ward || "N/A"}</div>
+                <div><b>Union:</b> {driver.present_union?.name || "N/A"}</div>
+                <div><b>Upazila:</b> {driver.present_upazila?.name || "N/A"}</div>
+                <div><b>District:</b> {driver.present_district?.name || "N/A"}</div>
+                <div><b>Division:</b> {driver.present_division?.name || "N/A"}</div>
               </AddressBox>
             </Col>
+
             <Col md={12} xs={24}>
               <AddressBox title="Permanent Address">
-                {driver.permanent_address}
+                <div><b>Village:</b> {driver.permanent_village || "N/A"}</div>
+                <div><b>Ward:</b> {driver.permanent_ward || "N/A"}</div>
+                <div><b>Union:</b> {driver.permanent_union?.name || "N/A"}</div>
+                <div><b>Upazila:</b> {driver.permanent_upazila?.name || "N/A"}</div>
+                <div><b>District:</b> {driver.permanent_district?.name || "N/A"}</div>
+                <div><b>Division:</b> {driver.permanent_division?.name || "N/A"}</div>
               </AddressBox>
             </Col>
           </Row>

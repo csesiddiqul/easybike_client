@@ -110,7 +110,7 @@ export const menus = [
     link: "vehicle-payments",
     icon: FiCreditCard,
     requiredPermissions: [
-      Utils.permissions.driver_self_payment_history,
+      Utils.permissions.view_vehicle,
     ],
   },
 

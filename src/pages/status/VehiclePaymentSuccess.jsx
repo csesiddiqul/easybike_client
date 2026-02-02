@@ -23,7 +23,7 @@ const VehiclePaymentSuccess = () => {
 
         {/* SUB TITLE */}
         <h2 className="text-lg font-semibold text-green-600 mb-4">
-          Driver Licence Activated
+            Vehicle Licence Activated
         </h2>
 
         {/* MESSAGE */}
