@@ -9,6 +9,7 @@ import {
   Row,
   Spin,
   Upload,
+  Checkbox
 } from "antd";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -19,17 +20,13 @@ import {
   useUpdateDriverMutation,
 } from "../../redux/api/driverApiSlice";
 
+import PermanentAddress from "./PermanentAddress";
+import PresentAddress from "./PresentAddress";
+
+import { getInitialValues, validationSchema } from "./validation";
+
 import { transformErrorsToObjectStructure } from "../../../utils/main/transformErrorsToObjectStructure";
 import * as Yup from "yup";
-
-/* ===================== VALIDATION ===================== */
-const validationSchema = Yup.object({
-  name: Yup.string().required("Driver name is required"),
-  phone: Yup.string().required("Phone number is required"),
-  nid: Yup.string().required("NID is required"),
-  present_address: Yup.string().required("Present address is required"),
-  permanent_address: Yup.string().required("Permanent address is required"),
-});
 
 /* ===================== IMAGE PREVIEW ===================== */
 const getBase64 = (file) =>
@@ -48,91 +45,144 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
   const [createDriver, createRes] = useCreateDriverMutation();
   const [updateDriver, updateRes] = useUpdateDriverMutation();
 
-  /* ===================== FORMIK ===================== */
-  const {
-    values,
-    errors,
-    setErrors,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-    resetForm,
-    setValues,
-  } = useFormik({
-    initialValues: {
-      name: "",
-      phone: "",
-      email: "",
-      nid: "",
-      years_of_experience: "",
-      present_address: "",
-      permanent_address: "",
-    },
-    validationSchema,
-    onSubmit: async (values) => {
-      const formData = new FormData();
+/* ===================== FORMIK ===================== */
+const {
+  values,
+  errors,
+  touched,
+  handleBlur,
+  setErrors,
+  handleChange,
+  handleSubmit,
+  setFieldValue,
+  resetForm,
+  setValues,
+} = useFormik({
+  initialValues: {
+    name: "",
+    phone: "",
+    email: "",
+    nid: "",
+    years_of_experience: "",
+    same_as_present: false,
 
-      Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value ?? "");
-      });
+    ...getInitialValues(editData),
+  },
 
-      if (fileList.length && fileList[0]?.originFileObj) {
-        formData.append("driver_image", fileList[0].originFileObj);
-      }
+  validationSchema,
+  onSubmit: async (values) => {
+    const formData = new FormData();
 
-      try {
-        if (editData) {
-          formData.append("_method", "PUT");
-          await updateDriver({ id: editData.id, formData }).unwrap();
-          toast.success("Driver updated successfully");
-        } else {
-          await createDriver(formData).unwrap();
-          toast.success("Driver created successfully");
-        }
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value ?? "");
+    });
 
-        resetForm();
-        setFileList([]);
-        onClose();
-      } catch (err) {
-        if (err?.data?.errors) {
-          setErrors(transformErrorsToObjectStructure(err.data.errors));
-        } else {
-          toast.error("Failed to save driver information");
-        }
-      }
-    },
-  });
-
-  /* ===================== SET EDIT DATA ===================== */
-  useEffect(() => {
-    if (open && editData) {
-      setValues({
-        name: editData.user?.name || "",
-        phone: editData.user?.phone || "",
-        email: editData.user?.email || "",
-        nid: editData.nid || "",
-        years_of_experience: editData.years_of_experience || "",
-        present_address: editData.present_address || "",
-        permanent_address: editData.permanent_address || "",
-      });
-
-      if (editData.driver_image) {
-        setFileList([
-          {
-            uid: "-1",
-            name: "driver.jpg",
-            status: "done",
-            url: editData.driver_image,
-          },
-        ]);
-      }
+    if (fileList.length && fileList[0]?.originFileObj) {
+      formData.append("driver_image", fileList[0].originFileObj);
     }
 
-    if (!open) {
+    try {
+      if (editData) {
+        formData.append("_method", "PUT");
+        await updateDriver({ id: editData.id, formData }).unwrap();
+        toast.success("Driver updated successfully");
+      } else {
+        await createDriver(formData).unwrap();
+        toast.success("Driver created successfully");
+      }
+
       resetForm();
       setFileList([]);
+      onClose();
+    } catch (err) {
+      if (err?.data?.errors) {
+        setErrors(transformErrorsToObjectStructure(err.data.errors));
+      } else {
+        toast.error("Failed to save driver information");
+      }
     }
-  }, [open, editData]);
+  },
+});
+
+  /* ===================== SET EDIT DATA ===================== */
+useEffect(() => {
+  if (open && editData) {
+    setValues({
+      // Basic
+      name: editData.user?.name || "",
+      phone: editData.user?.phone || "",
+      email: editData.user?.email || "",
+      nid: editData.nid || "",
+      years_of_experience: editData.years_of_experience || "",
+
+      // Present Address
+      present_division_id: editData.present_division?.id || "",
+      present_district_id: editData.present_district?.id || "",
+      present_upazila_id: editData.present_upazila?.id || "",
+      present_union_id: editData.present_union?.id || "",
+      present_ward: editData.present_ward || "",
+      present_village: editData.present_village || "",
+
+      // Permanent Address
+      permanent_division_id: editData.permanent_division?.id || "",
+      permanent_district_id: editData.permanent_district?.id || "",
+      permanent_upazila_id: editData.permanent_upazila?.id || "",
+      permanent_union_id: editData.permanent_union?.id || "",
+      permanent_ward: editData.permanent_ward || "",
+      permanent_village: editData.permanent_village || "",
+    });
+
+    if (editData.driver_image) {
+      setFileList([
+        {
+          uid: "-1",
+          name: "driver.jpg",
+          status: "done",
+          url: editData.driver_image,
+        },
+      ]);
+    }
+  }
+
+  if (!open) {
+    resetForm();
+    setFileList([]);
+  }
+}, [open, editData]);
+
+
+
+  /* ===================== MAIN FIX (SEQUENTIAL SYNC) ===================== */
+  // 1. division
+  useEffect(() => {
+    if (values.same_as_present) {
+      setFieldValue("permanent_division_id", values.present_division_id);
+    }
+  }, [values.same_as_present, values.present_division_id]);
+
+  // 2. district
+  useEffect(() => {
+    if (values.same_as_present && values.permanent_division_id) {
+      setFieldValue("permanent_district_id", values.present_district_id);
+    }
+  }, [values.permanent_division_id]);
+
+  // 3. upazila
+  useEffect(() => {
+    if (values.same_as_present && values.permanent_district_id) {
+      setFieldValue("permanent_upazila_id", values.present_upazila_id);
+    }
+  }, [values.permanent_district_id]);
+
+  // 4. union + ward + village
+  useEffect(() => {
+    if (values.same_as_present && values.permanent_upazila_id) {
+      setFieldValue("permanent_union_id", values.present_union_id);
+      setFieldValue("permanent_ward", values.present_ward);
+      setFieldValue("permanent_village", values.present_village);
+    }
+  }, [values.permanent_upazila_id]);
+
 
   /* ===================== IMAGE PREVIEW ===================== */
   const handlePreview = async (file) => {
@@ -150,7 +200,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
       open={open}
       onCancel={onClose}
       title={editData ? "Update Driver" : "Add Driver"}
-      width={800}
+      width={900}
       footer={
         <div className="text-right">
           <Button
@@ -269,40 +319,57 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
                   </Col>
                 </Row>
               </Col>
-
-              <Col md={12}>
-                <Form.Item
-                  label="Present Address"
-                  validateStatus={errors.present_address ? "error" : ""}
-                  help={errors.present_address}
-                >
-                  <Input.TextArea
-                    rows={3}
-                    name="present_address"
-                    placeholder="Current address"               
-                    value={values.present_address}
-                    onChange={handleChange}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col md={12}>
-                <Form.Item
-                  label="Permanent Address"
-                  validateStatus={errors.permanent_address ? "error" : ""}
-                  help={errors.permanent_address}
-                >
-                  <Input.TextArea
-                    rows={3}
-                    name="permanent_address"
-                    placeholder="Permanent address"             
-                    value={values.permanent_address}
-                    onChange={handleChange}
-                  />
-                </Form.Item>
-              </Col>
             </Row>
           </fieldset>
+
+        <fieldset className="bg-gray-100 rounded px-3 py-2 mt-4 border-2 border-gray-300">
+          <legend className="px-2 text-sm font-semibold text-gray-700">
+            Present Address
+          </legend>
+
+          <Row gutter={16}>
+            <PresentAddress
+              editData={editData}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setValues={setValues}
+              setFieldValue={setFieldValue}
+            />
+          </Row>
+        </fieldset>
+
+        <fieldset className="bg-indigo-100 rounded py-1 px-3 mt-4 border-2 border-gray-300">
+          <legend className="px-2 text-sm font-semibold text-gray-700">
+            Permanent Address
+          </legend>
+
+          <div className="mb-2 py-2">
+            <Checkbox
+              checked={values.same_as_present}
+              onChange={(e) =>
+                setFieldValue("same_as_present", e.target.checked)
+              }
+            >
+              Permanent address is same as present address
+            </Checkbox>
+          </div>
+
+          <Row gutter={16}>
+            <PermanentAddress
+              editData={editData}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setValues={setValues}
+              setFieldValue={setFieldValue}
+            />
+          </Row>
+        </fieldset>
         </Form>
 
         <Modal

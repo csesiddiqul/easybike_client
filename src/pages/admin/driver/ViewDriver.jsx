@@ -188,12 +188,23 @@ const ViewDriver = ({ open, onClose, data }) => {
           <Row gutter={[16, 16]}>
             <Col md={12} xs={24}>
               <AddressBox title="Present Address">
-                {data.present_address}
+                <div><b>Village:</b> {data.present_village || "N/A"}</div>
+                <div><b>Ward:</b> {data.present_ward || "N/A"}</div>
+                <div><b>Union:</b> {data.present_union?.name || "N/A"}</div>
+                <div><b>Upazila:</b> {data.present_upazila?.name || "N/A"}</div>
+                <div><b>District:</b> {data.present_district?.name || "N/A"}</div>
+                <div><b>Division:</b> {data.present_division?.name || "N/A"}</div>
               </AddressBox>
             </Col>
+
             <Col md={12} xs={24}>
               <AddressBox title="Permanent Address">
-                {data.permanent_address}
+                <div><b>Village:</b> {data.permanent_village || "N/A"}</div>
+                <div><b>Ward:</b> {data.permanent_ward || "N/A"}</div>
+                <div><b>Union:</b> {data.permanent_union?.name || "N/A"}</div>
+                <div><b>Upazila:</b> {data.permanent_upazila?.name || "N/A"}</div>
+                <div><b>District:</b> {data.permanent_district?.name || "N/A"}</div>
+                <div><b>Division:</b> {data.permanent_division?.name || "N/A"}</div>
               </AddressBox>
             </Col>
           </Row>

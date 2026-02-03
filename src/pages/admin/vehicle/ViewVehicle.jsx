@@ -8,6 +8,7 @@ const ViewVehicle = ({ open, onClose, editData }) => {
 
   return (
     <Modal
+      className="modal"
       open={open}
       onCancel={onClose}
       footer={null}

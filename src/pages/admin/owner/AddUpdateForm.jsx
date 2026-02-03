@@ -8,10 +8,11 @@ import {
   Row,
   Select,
   Spin,
+  Checkbox,
   Upload,
 } from "antd";
 import { useFormik } from "formik";
-import {  useState } from "react";
+import {  useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { FiSave } from "react-icons/fi";
 import { createFormData } from "../../../utils/main/createFormData";
@@ -20,6 +21,12 @@ import {
   useCreateOwnerMutation,
   useUpdateOwnerMutation,
 } from "../../redux/api/ownersApiSlice";
+
+import PresentAddress from "../driver/PresentAddress";
+import PermanentAddress from "../driver/PermanentAddress";
+import { getInitialValues, validationSchema } from "./validation";
+
+
 import * as Yup from "yup";
 
 const getBase64 = (file) =>
@@ -38,24 +45,14 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
   const [createOwner, createState] = useCreateOwnerMutation();
   const [updateOwner, updateState] = useUpdateOwnerMutation();
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    phone: Yup.string().required("Phone is required"),
-    email: Yup.string().email().required("Email is required"),
-    status: Yup.string().required("Status is required"),
-    father_or_husband_name: Yup.string().required("Required"),
-    ward_number: Yup.string().required("Required"),
-    mohalla_name: Yup.string().required("Required"),
-    present_address: Yup.string().required("Required"),
-    permanent_address: Yup.string().required("Required"),
-  });
-
   const {
     values,
     errors,
     touched,
     handleChange,
+    handleBlur,
     handleSubmit,
+    setValues,
     setErrors,
     setFieldValue,
     resetForm,
@@ -66,14 +63,13 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
       email: editData?.user?.email || "",
       status: editData?.user?.status || "",
       father_or_husband_name: editData?.father_or_husband_name || "",
-      ward_number: editData?.ward_number || "",
-      mohalla_name: editData?.mohalla_name || "",
       nid_number: editData?.nid_number || "",
-      birth_registration_number:
-        editData?.birth_registration_number || "",
-      present_address: editData?.present_address || "",
-      permanent_address: editData?.permanent_address || "",
+      birth_registration_number: editData?.birth_registration_number || "",
+      same_as_present: false,
+
+      ...getInitialValues(editData),
     },
+
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -103,6 +99,20 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
       }
     },
   });
+
+useEffect(() => {
+  if (editData?.image) {
+    setFileList([
+      {
+        uid: "-1",
+        name: "owner.jpg",
+        status: "done",
+        url: editData.image, // backend full URL
+      },
+    ]);
+  }
+}, [editData]);
+
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -154,6 +164,8 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
                   </Upload>
                 </Form.Item>
               </Col>
+
+             
 
               <Col md={18}>
                 <Row gutter={16}>
@@ -211,7 +223,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
             </legend>
 
             <Row gutter={16}>
-              <Col md={12}>
+              <Col md={24}>
                 <Form.Item label="Father / Husband Name">
                   <Input
                     name="father_or_husband_name"
@@ -221,7 +233,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
                 </Form.Item>
               </Col>
 
-              <Col md={6}>
+              {/* <Col md={6}>
                 <Form.Item label="Ward Number">
                   <Input name="ward_number" value={values.ward_number} onChange={handleChange} />
                 </Form.Item>
@@ -231,7 +243,7 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
                 <Form.Item label="Mohalla Name">
                   <Input name="mohalla_name" value={values.mohalla_name} onChange={handleChange} />
                 </Form.Item>
-              </Col>
+              </Col> */}
             </Row>
           </fieldset>
 
@@ -261,30 +273,54 @@ const AddUpdateForm = ({ open, onClose, editData }) => {
           </fieldset>
 
           {/* ================= ADDRESS ================= */}
-          <fieldset className="bg-gray-100 rounded px-3 py-2 mt-4 border-2 border-gray-300">
-            <legend className="px-2 text-sm font-semibold">
-              Address Information
-            </legend>
+        <fieldset className="bg-gray-100 rounded px-3 py-2 mt-4 border-2 border-gray-300">
+          <legend className="px-2 text-sm font-semibold text-gray-700">
+            Present Address
+          </legend>
 
-            <Row gutter={16}>
-              <Col md={12}>
-                <Form.Item label="Present Address">
-                  <Input name="present_address" value={values.present_address} onChange={handleChange} />
-                </Form.Item>
-              </Col>
+          <Row gutter={16}>
+            <PresentAddress
+              editData={editData}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setValues={setValues}
+              setFieldValue={setFieldValue}
+            />
+          </Row>
+        </fieldset>
 
-              <Col md={12}>
-                <Form.Item label="Permanent Address">
-                  <Input
-                    name="permanent_address"
-                    value={values.permanent_address}
-                    onChange={handleChange}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          </fieldset>
+        <fieldset className="bg-indigo-100 rounded py-1 px-3 mt-4 border-2 border-gray-300">
+          <legend className="px-2 text-sm font-semibold text-gray-700">
+            Permanent Address
+          </legend>
 
+          <div className="mb-2 py-2">
+            <Checkbox
+              checked={values.same_as_present}
+              onChange={(e) =>
+                setFieldValue("same_as_present", e.target.checked)
+              }
+            >
+              Permanent address is same as present address
+            </Checkbox>
+          </div>
+
+          <Row gutter={16}>
+            <PermanentAddress
+              editData={editData}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setValues={setValues}
+              setFieldValue={setFieldValue}
+            />
+          </Row>
+        </fieldset>
         </Form>
 
         <Modal open={previewOpen} footer={null} onCancel={() => setPreviewOpen(false)}>

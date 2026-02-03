@@ -1,8 +1,8 @@
 
 
 // base url
-export const BASE_URL = "http://127.0.0.1:8000";
-// export const BASE_URL = "https://medicinep-api.flitbd.com";
+//export const BASE_URL = "http://127.0.0.1:8000";
+export const BASE_URL = "https://easybike-api.flitbd.com"
 
 // Local storage
 export const LOCAL_STORAGE_TOKEN = "token";

@@ -9,7 +9,24 @@ import {
   FaMoneyBillWave,
   FaUsers,
   FaTruck,
+  
 } from "react-icons/fa";
+
+
+import {
+  
+  FaUserTie,
+  FaUserCheck,
+  FaUserClock,
+  FaUserSlash,
+  FaUserShield,
+  FaCar,
+  FaFileSignature,
+  FaCarCrash,
+  FaFileAlt,
+  
+} from "react-icons/fa";
+
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbMedicineSyrup } from "react-icons/tb";
 
@@ -152,90 +169,110 @@ const Dashboard = () => {
       )}
 
       {/* ================= SUPER ADMIN DASHBOARD ================= */}
-      {roleName === "Super Admin" && (
-        <>
-          <div className="col-span-12 card-layout">
-            <h2 className="text-xl font-bold text-slate-600 mb-1">
-              Overview
-            </h2>
-            <p className="text-sm text-gray-500 mb-4">
-              App summary
-            </p>
+{roleName === "Super Admin" && (
+  <>
+    <div className="col-span-12 card-layout">
+      <h2 className="text-xl font-bold text-slate-600 mb-1">
+        Overview
+      </h2>
+      <p className="text-sm text-gray-500 mb-4">
+        System summary
+      </p>
 
-            <div className="grid grid-cols-4 gap-3">
-              <DashboardCard
-                icon={<FaUsers />}
-                icon_color="text-green-600"
-                title={info?.total_admin_users ?? 0}
-                sub_title="System Users"
-              />
+      <div className="grid grid-cols-4 gap-3">
+        {/* 👨‍💼 Users */}
+        <DashboardCard
+          icon={<FaUsers />}
+          icon_color="text-indigo-600"
+          title={info?.total_users ?? 0}
+          sub_title="System Users"
+        />
 
-              <DashboardCard
-                icon={<FaUserDoctor />}
-                icon_color="text-blue-600"
-                title={info?.total_patients ?? 0}
-                sub_title="Patients"
-              />
+        {/* 🚗 Drivers */}
+        <DashboardCard
+          icon={<FaUserTie />}
+          icon_color="text-blue-600"
+          title={info?.total_drivers ?? 0}
+          sub_title="Total Drivers"
+        />
 
-              <DashboardCard
-                icon={<TbMedicineSyrup />}
-                icon_color="text-lime-600"
-                title={info?.total_medicines ?? 0}
-                sub_title="Total Medicine"
-              />
+        <DashboardCard
+          icon={<FaUserCheck />}
+          icon_color="text-green-600"
+          title={info?.active_drivers ?? 0}
+          sub_title="Active Drivers"
+        />
 
-              <DashboardCard
-                icon={<TbMedicineSyrup />}
-                icon_color="text-orange-600"
-                title={info?.total_stock_quantity ?? 0}
-                sub_title="Stock"
-              />
+        <DashboardCard
+          icon={<FaUserClock />}
+          icon_color="text-yellow-600"
+          title={info?.pending_drivers ?? 0}
+          sub_title="Pending Drivers"
+        />
 
-              <DashboardCard
-                icon={<TbMedicineSyrup />}
-                icon_color="text-teal-600"
-                title={info?.total_remaining_quantity ?? 0}
-                sub_title="Remaining"
-              />
+        <DashboardCard
+          icon={<FaUserSlash />}
+          icon_color="text-red-600"
+          title={info?.expired_drivers ?? 0}
+          sub_title="Expired Drivers"
+        />
 
-              <DashboardCard
-                icon={<TbMedicineSyrup />}
-                icon_color="text-pink-600"
-                title={info?.expired_quantity ?? 0}
-                sub_title="Expired"
-              />
+        {/* 👤 Owners */}
+        <DashboardCard
+          icon={<FaUserShield />}
+          icon_color="text-teal-600"
+          title={info?.total_owners ?? 0}
+          sub_title="Total Owners"
+        />
 
-              <DashboardCard
-                icon={<TbMedicineSyrup />}
-                icon_color="text-fuchsia-600"
-                title={info?.damaged_quantity ?? 0}
-                sub_title="Damaged"
-              />
-            </div>
-          </div>
+        <DashboardCard
+          icon={<FaUserCheck />}
+          icon_color="text-emerald-600"
+          title={info?.active_owners ?? 0}
+          sub_title="Active Owners"
+        />
 
-          <div className="col-span-12 md:col-span-8 card-layout">
-            <h2 className="text-md font-bold text-slate-600 mb-3">
-              Monthly Medicine Report
-            </h2>
-            <BarChart data={info?.monthly_report ?? []} />
-          </div>
+        {/* 🚙 Vehicles */}
+        <DashboardCard
+          icon={<FaCar />}
+          icon_color="text-sky-600"
+          title={info?.total_vehicles ?? 0}
+          sub_title="Total Vehicles"
+        />
 
-          <div className="col-span-12 md:col-span-4 card-layout">
-            <h2 className="text-md font-bold text-slate-600 mb-3">
-              Medicine Overview
-            </h2>
-            <PieChart data={info} />
-          </div>
+        <DashboardCard
+          icon={<FaCarSide />}
+          icon_color="text-green-600"
+          title={info?.active_vehicles ?? 0}
+          sub_title="Active Vehicles"
+        />
 
-          <div className="col-span-12 card-layout">
-            <h2 className="text-md font-bold text-slate-600 mb-3">
-              Trend Analysis
-            </h2>
-            <LineChart data={info?.monthly_report ?? []} />
-          </div>
-        </>
-      )}
+        <DashboardCard
+          icon={<FaCarCrash />}
+          icon_color="text-red-600"
+          title={info?.expired_vehicles ?? 0}
+          sub_title="Expired Vehicles"
+        />
+
+        {/* 📄 Licences */}
+        <DashboardCard
+          icon={<FaFileAlt />}
+          icon_color="text-purple-600"
+          title={info?.total_driver_licences ?? 0}
+          sub_title="Driver Licences"
+        />
+
+        <DashboardCard
+          icon={<FaFileSignature />}
+          icon_color="text-fuchsia-600"
+          title={info?.total_vehicle_licences ?? 0}
+          sub_title="Vehicle Licences"
+        />
+      </div>
+    </div>
+  </>
+)}
+
     </div>
   );
 };

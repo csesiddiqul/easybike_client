@@ -5,7 +5,7 @@ import {
   useDeleteOwnerMutation,
   useGetOwnerQuery,
 } from "../../redux/api/ownersApiSlice";
-import { Badge, Button, Popconfirm } from "antd";
+import { Badge, Button, Popconfirm, Avatar } from "antd";
 import { FiEdit, FiEye, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 import AddUpdateForm from "./AddUpdateForm";
 import ViewUser from "./ViewUser.jsx";
@@ -122,6 +122,17 @@ const Owner = () => {
       label: "SI",
       name: "si",
     },
+
+    {
+      label: "Photo",
+      name: "photo",
+      render: (value) => (
+        <Avatar src={value} size={60}>
+          D
+        </Avatar>
+      ),
+    },
+
     {
       label: "Name",
       name: "name",
@@ -196,6 +207,7 @@ const Owner = () => {
 
   const TableData = data?.data?.data?.map((item, i) => ({
     si: (currentPage - 1) * perPage + i + 1,
+    photo: item.image,
     name: item.user?.name,
     email: item.user?.email,
     phone: item.user?.phone,

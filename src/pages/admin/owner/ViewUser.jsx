@@ -1,150 +1,149 @@
-import { Modal, Badge, Button } from "antd";
+import { Modal, Row, Col, Avatar, Tag, Divider, Button } from "antd";
+import {
+  FiPhone,
+  FiMail,
+  FiMapPin,
+  FiHash,
+  FiCalendar,
+  FiUser,
+} from "react-icons/fi";
 import { enlocalDateFormat } from "../../../utils/main/dateFormat";
-import { useRef } from "react";
 
 const ViewUser = ({ open, onClose, editData }) => {
-    const user = editData?.user;
-    const printRef = useRef();
+  if (!editData) return null;
 
-    const handlePrint = () => {
-        const printContent = printRef.current.innerHTML;
-        const originalContent = document.body.innerHTML;
+  const user = editData?.user;
 
-        document.body.innerHTML = `
-            <html>
-                <head>
-                    <title>Owner Information</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            padding: 20px;
-                        }
-                        h2 {
-                            margin-top: 20px;
-                        }
-                        img {
-                            width: 120px;
-                            height: 120px;
-                            border-radius: 50%;
-                            object-fit: cover;
-                        }
-                        hr {
-                            margin: 8px 0;
-                        }
-                        p {
-                            margin: 4px 0;
-                            font-size: 14px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${printContent}
-                </body>
-            </html>
-        `;
+  return (
+    <Modal
+      className="modal"
+      open={open}
+      onCancel={onClose}
+      footer={null}
+      width={900}
+      title="Owner Profile"
+    >
+      <div className="border rounded-lg p-5 bg-white">
+        {/* HEADER */}
+        <div className="flex items-center gap-6 mb-4">
+          <Avatar
+            size={120}
+            src={editData?.image}
+            style={{ backgroundColor: "#e5e7eb" }}
+          >
+            {user?.name?.charAt(0)}
+          </Avatar>
 
-        window.print();
-        document.body.innerHTML = originalContent;
-        window.location.reload();
-    };
+          <div className="flex-1">
+            <h2 className="text-2xl font-semibold">
+              {user?.name || "N/A"}
+            </h2>
 
-    return (
-        <Modal
-            open={open}
-            title="View Owner Information"
-            onCancel={onClose}
-            width={800}
-            footer={[
-                <Button key="print" type="primary" onClick={handlePrint}>
-                    Print
-                </Button>,
-                <Button key="close" onClick={onClose}>
-                    Close
-                </Button>,
-            ]}
-        >
-            {/* PRINT AREA */}
-            <div ref={printRef} className="p-6 space-y-6">
-
-                {/* Profile Image */}
-                <div className="flex justify-center">
-                    <img
-                        src={editData?.image}
-                        alt={user?.name}
-                        className="w-32 h-32 rounded-full object-cover border shadow"
-                    />
-                </div>
-
-                {/* User Account Info */}
-                <div>
-                    <h2 className="font-semibold text-lg mb-2">Basic Information</h2>
-                    <hr />
-
-                    <p><strong>Name:</strong> {user?.name || "-"}</p>
-                    <p><strong>Email:</strong> {user?.email || "-"}</p>
-                    <p><strong>Phone:</strong> {user?.phone || "-"}</p>
-                    <p>
-                        <strong>Status:</strong>{" "}
-                        <Badge
-                            status={user?.status === "Active" ? "success" : "error"}
-                            text={user?.status}
-                        />
-                    </p>
-                </div>
-
-                {/* Owner Personal Info */}
-                <div>
-                    <h2 className="font-semibold text-lg mb-2">Personal Information</h2>
-                    <hr />
-
-                    <p>
-                        <strong>Father / Husband Name:</strong>{" "}
-                        {editData?.father_or_husband_name || "-"}
-                    </p>
-                    <p>
-                        <strong>Ward Number:</strong> {editData?.ward_number || "-"}
-                    </p>
-                    <p>
-                        <strong>Mohalla Name:</strong> {editData?.mohalla_name || "-"}
-                    </p>
-                    <p>
-                        <strong>NID Number:</strong> {editData?.nid_number || "-"}
-                    </p>
-                    <p>
-                        <strong>Birth Registration Number:</strong>{" "}
-                        {editData?.birth_registration_number || "-"}
-                    </p>
-                </div>
-
-                {/* Address Info */}
-                <div className="grid grid-cols-2 gap-6">
-                    <div>
-                        <h2 className="font-semibold text-lg mb-2">Present Address</h2>
-                        <hr />
-                        <p>{editData?.present_address || "-"}</p>
-                    </div>
-
-                    <div>
-                        <h2 className="font-semibold text-lg mb-2">Permanent Address</h2>
-                        <hr />
-                        <p>{editData?.permanent_address || "-"}</p>
-                    </div>
-                </div>
-
-                {/* Meta Info */}
-                <div>
-                    <h2 className="font-semibold text-lg mb-2">System Information</h2>
-                    <hr />
-                    <p>
-                        <strong>Created At:</strong>{" "}
-                        {editData?.created_at
-                            ? enlocalDateFormat(editData.created_at)
-                            : "-"}
-                    </p>
-                </div>
+            <div className="flex flex-wrap items-center gap-3 mt-2">
+              <Tag color={user?.status === "Active" ? "green" : "red"}>
+                {user?.status}
+              </Tag>
             </div>
-        </Modal>
-    );
+          </div>
+        </div>
+
+        <Divider />
+
+        {/* BASIC INFO */}
+        <Row gutter={[16, 16]}>
+          <Col md={12} xs={24}>
+            <InfoItem icon={<FiPhone />} label="Phone">
+              {user?.phone || "N/A"}
+            </InfoItem>
+          </Col>
+
+          <Col md={12} xs={24}>
+            <InfoItem icon={<FiMail />} label="Email">
+              {user?.email || "N/A"}
+            </InfoItem>
+          </Col>
+
+          <Col md={12} xs={24}>
+            <InfoItem icon={<FiUser />} label="Father / Husband">
+              {editData?.father_or_husband_name || "N/A"}
+            </InfoItem>
+          </Col>
+
+          <Col md={12} xs={24}>
+            <InfoItem icon={<FiHash />} label="NID Number">
+              {editData?.nid_number || "N/A"}
+            </InfoItem>
+          </Col>
+
+          <Col md={12} xs={24}>
+            <InfoItem icon={<FiHash />} label="Birth Reg Number">
+              {editData?.birth_registration_number || "N/A"}
+            </InfoItem>
+          </Col>
+
+          <Col md={12} xs={24}>
+            <InfoItem icon={<FiCalendar />} label="Created At">
+              {editData?.created_at
+                ? enlocalDateFormat(editData.created_at)
+                : "N/A"}
+            </InfoItem>
+          </Col>
+        </Row>
+
+        <Divider />
+
+        {/* ADDRESS */}
+        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+          <FiMapPin /> Address Information
+        </h3>
+
+        <Row gutter={[16, 16]}>
+          <Col md={12} xs={24}>
+            <AddressBox title="Present Address">
+              <div><b>Village:</b> {editData?.present_village || "N/A"}</div>
+              <div><b>Ward:</b> {editData?.present_ward || "N/A"}</div>
+              <div><b>Union:</b> {editData?.present_union?.name || "N/A"}</div>
+              <div><b>Upazila:</b> {editData?.present_upazila?.name || "N/A"}</div>
+              <div><b>District:</b> {editData?.present_district?.name || "N/A"}</div>
+              <div><b>Division:</b> {editData?.present_division?.name || "N/A"}</div>
+            </AddressBox>
+          </Col>
+
+          <Col md={12} xs={24}>
+            <AddressBox title="Permanent Address">
+              <div><b>Village:</b> {editData?.permanent_village || "N/A"}</div>
+              <div><b>Ward:</b> {editData?.permanent_ward || "N/A"}</div>
+              <div><b>Union:</b> {editData?.permanent_union?.name || "N/A"}</div>
+              <div><b>Upazila:</b> {editData?.permanent_upazila?.name || "N/A"}</div>
+              <div><b>District:</b> {editData?.permanent_district?.name || "N/A"}</div>
+              <div><b>Division:</b> {editData?.permanent_division?.name || "N/A"}</div>
+            </AddressBox>
+          </Col>
+        </Row>
+      </div>
+    </Modal>
+  );
 };
+
+/* SUB COMPONENTS (same as driver) */
+
+const InfoItem = ({ icon, label, children }) => (
+  <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200">
+      {icon}
+    </div>
+    <div>
+      <p className="text-xs text-gray-500">{label}</p>
+      <p className="font-medium">{children}</p>
+    </div>
+  </div>
+);
+
+const AddressBox = ({ title, children }) => (
+  <div className="border rounded-lg p-3 bg-gray-50">
+    <p className="text-sm text-gray-500 mb-1">{title}</p>
+    <div className="space-y-1">{children}</div>
+  </div>
+);
 
 export default ViewUser;
